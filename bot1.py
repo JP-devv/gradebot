@@ -25,7 +25,7 @@ for line in getVar(file):
 print('')
 
 print('MEMORY')
-mem = getMemory(file)
+mem = getMem(file)
 for line in mem:
   print(line)
 print('')
