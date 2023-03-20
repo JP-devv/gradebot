@@ -23,28 +23,18 @@ def getVar(file):
         if len(bits) > 2:
           data.append(bits[:3])
     return data
+
+# Get specific memory variable
+def getMem(file):
+  data = getVar(file)
+  # Filter from data, we know memory will start as 0 or ?
+  new_data = []
+  for elem in data:
+    if elem[2] == '0' or elem[2] == '?':
+      new_data.append(elem)
+  return new_data
+    
       
-def getMemory(file):
-  # Store data in list
-  data = []
-  with open(file) as f:
-    lines = f.readlines()
-    for line in lines:
-      line = line.casefold()
-      # Break, we don't need to parse anymore
-      if '.code'.casefold() in line:
-        break
-      # Extract only given data 
-      if 'word'.casefold() in line \
-        and 'exit'.casefold() not in line \
-        and ('\t0' in line or ' 0' in line \
-        or '\t?' in line or ' ?' in line):
-        # Grab only the first three pieces -> NAME TYPE VALUE
-        data.append(line.upper().replace(';', ' ').split()[:3])
-    return data
-
-
-
 # Determine if 32 bit or 64 bit program
 def is32(file):
   with open(file) as f:
