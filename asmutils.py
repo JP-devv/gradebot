@@ -4,24 +4,26 @@ import os
 
 # Get variables from data section
 def getVar(file):
-  # Store data in list
+  # Store data in a list
   data = []
   with open(file) as f:
     lines = f.readlines()
+    # Only get code between .data and .code
+    is_past_data = False
     for line in lines:
       line = line.casefold()
-      # Break, we don't need to parse anymore
-      if '.code'.casefold() in line:
+      if not is_past_data and '.data' in line:
+        is_past_data = True
+        continue
+      elif is_past_data and '.code' in line:
+        is_past_data = False
         break
-      # Extract only given data 
-      if 'word'.casefold() in line \
-        and 'exit'.casefold() not in line \
-        and '\t0' not in line and ' 0' not in line \
-        and '\t?' not in line and ' ?' not in line:
-        # Grab only the first three pieces -> NAME TYPE VALUE
-        data.append(line.upper().replace(';', ' ').split()[:3])
+      elif is_past_data and line[0] != ';' and line[0] != '\n':
+        bits = line.replace(';', ' ').split()
+        if len(bits) > 2:
+          data.append(bits[:3])
     return data
-    
+      
 def getMemory(file):
   # Store data in list
   data = []
