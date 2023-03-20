@@ -1,5 +1,4 @@
 # Helpful utilities when grading ASM
-
 import os
 
 # Get variables from data section
@@ -55,15 +54,24 @@ def getIns(file):
         if len(bits) > 2:
           data.append(bits[:3])
     return data
+
+# Get opcodes only 
+def getCom(file):
+  instructions = getIns(file)
+  data = []
+  for elem in instructions:
+    data.append(elem[0])
+  return data
     
-      
 # Determine if 32 bit or 64 bit program
 def is32(file):
   with open(file) as f:
     lines = f.readlines()
     for line in lines:
       if '.386' in line:
+        print('32 BIT')
         return True
+    print('WARNING: 64 BIT SYSTEM CODE DETECTED')
     return False
       
 # Gets function names

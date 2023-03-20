@@ -14,10 +14,6 @@ standardize(file)
 # names is a list of functions that we have
 is32 = is32(file)
 
-# Announce program type
-print(f'TYPE: {32 if is32 else 64} BIT')
-print('')
-
 # Compute with data here
 print('DATA')
 for line in getVar(file):
@@ -30,18 +26,18 @@ for line in mem:
   print(line)
 print('')
 
-print('ASSERTIONS')
 # Test usage of mov
-assertt('Has mov', usesCommand(file, 'mov'))
+opcodes = getCom(file)
+assert 'mov' in opcodes, 'mov not used'
 
 # Test usage of add 
-assertt('Has add', usesCommand(file, 'add'))
+assert 'add' in opcodes, 'add not used'
 
 # Test usage of sub 
-assertt('Has sub', usesCommand(file, 'sub'))
+assert 'sub' in opcodes, 'sub not used'
 
 # Check if there is memory
-assertt('Has mem', mem)
+assert mem, 'No memory allocated for registers'
 
 if len(sys.argv) == 2:
   print('')
