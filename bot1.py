@@ -26,8 +26,11 @@ for line in mem:
   print(line)
 print('')
 
+print('OPCODES')
+opcodes = getOp(file)
+print(opcodes,'\n')
+
 # Test usage of mov
-opcodes = getCom(file)
 assert 'mov' in opcodes, 'mov not used'
 
 # Test usage of add 

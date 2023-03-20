@@ -56,12 +56,12 @@ def getIns(file):
     return data
 
 # Get opcodes only 
-def getCom(file):
+def getOp(file):
   instructions = getIns(file)
   data = []
   for elem in instructions:
     data.append(elem[0])
-  return data
+  return set(data)
     
 # Determine if 32 bit or 64 bit program
 def is32(file):
@@ -69,9 +69,9 @@ def is32(file):
     lines = f.readlines()
     for line in lines:
       if '.386' in line:
-        print('32 BIT')
+        print('32 BIT\n')
         return True
-    print('WARNING: 64 BIT SYSTEM CODE DETECTED')
+    print('WARNING: 64 BIT SYSTEM CODE DETECTED\n')
     return False
       
 # Gets function names
