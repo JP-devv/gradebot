@@ -10,6 +10,8 @@ class asm:
     self.__standardize() # Cleans file to uniform format
     with open(self.file) as file: # Get content from file
       self.lines = file.readlines()
+      for i in range(len(self.lines)):
+        self.lines[i] = self.lines[i].casefold().replace(',', ' ')
     self.__is32() # Determines if 32 bit or 64 bit program
     self.functions = self.__getFunction() # Get function names
     self.var = self.__getVar() # Get variables from data section
@@ -24,7 +26,6 @@ class asm:
     # Only get code between .data and .code
     is_past_data = False
     for line in self.lines:
-      line = line.casefold()
       if not is_past_data and '.data' in line:
         is_past_data = True
         continue
@@ -52,7 +53,6 @@ class asm:
     # Only get code between .data and .code
     is_past_code = False
     for line in self.lines:
-      line = line.casefold().replace(',', ' ')
       if not is_past_code and 'main proc' in line:
         is_past_code = True
         continue
@@ -78,7 +78,6 @@ class asm:
     # Only get code between .data and .code
     is_past_code = False
     for line in self.lines:
-      line = line.casefold().replace(',', ' ')
       if not is_past_code and 'main proc' in line:
         is_past_code = True
         continue
@@ -104,7 +103,7 @@ class asm:
     # Store functions as string list
     names = []
     for line in self.lines:
-      if 'endp'.casefold() in line.casefold():
+      if 'endp' in line:
         names.append(line.split()[0])
       return names
   # __standardize linker
