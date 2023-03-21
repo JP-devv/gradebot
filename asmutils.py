@@ -3,21 +3,20 @@ import os
 
 class asm:
   file = None
-  var = None
-  mem = None
-  ins = None
-  opcodes = None
-  lines = None
+  var, mem, ins, opcodes, lines = None, None, None, None, None
+
   def __init__(self, file):
     self.file = file
-    self.standardize()
-    with open(self.file) as file:
+    self.standardize() # Cleans file to uniform format
+    self.is32() # Determines if 32 bit or 64 bit program
+    with open(self.file) as file: # Get content from file
       self.lines = file.readlines()
-    self.var = self.getVar()
-    self.mem = self.getMem()
-    self.ins = self.getIns()
-    self.opcodes = self.getOp()
-  # Get variables from data section
+    self.var = self.getVar() # Get variables from data section
+    self.mem = self.getMem() # Get variable selected for memory
+    self.ins = self.getIns() # Get ASM instructions
+    self.opcodes = self.getOp() # Get unique opcodes uses in file
+
+  # Gets variables from data section
   def getVar(self):
     # Store data in a list
     data = []
