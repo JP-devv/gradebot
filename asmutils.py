@@ -113,6 +113,7 @@ class asm:
     os.system(f'sed -i "" "s/END main/END _main/" "{self.file}"')
   # Copy file to clipboard and delete
   def replace(self):
+    print('')
     os.system(f'cat "{self.file}" | pbcopy && rm "{self.file}"')
     print(f'Replaced {self.file} onto clipboard successfully')
   def printInfo(self):
