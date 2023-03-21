@@ -8,18 +8,7 @@ file = sys.argv[1]
 file = asm(file)
 
 # Compute with data here
-print('DATA')
-for line in file.var:
-  print(line)
-print('')
-
-print('MEMORY')
-for line in file.mem:
-  print(line)
-print('')
-
-print('OPCODES')
-print(file.opcodes,'\n')
+file.printInfo()
 
 # Test usage of mov
 assert 'mov' in file.opcodes, 'mov not used'

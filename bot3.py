@@ -13,14 +13,10 @@ file.printInfo()
 # Test usage of add 
 assert 'add' in file.opcodes, 'add not used'
 # Test usage of mul
-assert 'mul' in file.opcodes or 'imul' in file.opcodes, 'mul not used'
-# Test usage of cdq 
-assert 'cdq' in file.opcodes, 'cdq not used'
-# Test usage of div
-assert 'div' in file.opcodes or 'idiv' in file.opcodes, 'div not used'
+assert 'jbe' in file.opcodes or 'jz' in file.opcodes, 'jump not used'
 # Check if there is memory
 assert file.mem, 'No memory allocated for registers'
-print('Expect 0x00000049 (73)')
+print('INSERT ANSWER HERE')
 
 if len(sys.argv) == 2:
   print('')
