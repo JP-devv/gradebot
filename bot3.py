@@ -5,6 +5,7 @@ file = sys.argv[1]
 file = asm(file)
 # Print info from file
 file.printInfo()
+
 # Test usage of add 
 assert 'add' in file.opcodes, 'add not used'
 # Test usage of mul
@@ -14,6 +15,7 @@ assert len(file.labels) > 0, 'No labels used'
 # Check if there is memory
 assert file.mem, 'No memory allocated for registers'
 print('INSERT ANSWER HERE')
+
 # Replace file with new data if test argument isn't given
 if len(sys.argv) == 2:
   file.replace()
