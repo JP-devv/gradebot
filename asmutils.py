@@ -5,6 +5,8 @@ class asm:
   file = None
   var, mem, ins, opcodes, functions, lines = None, None, None, None, None, None
 
+  # Constructor will get all necessary information from file
+  # and will organize it to be easily accessable for whatever you need
   def __init__(self, file):
     self.file = file
     self.__standardize() # Cleans file to uniform format
