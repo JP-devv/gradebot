@@ -104,3 +104,18 @@ class asm:
   def replace(self):
     os.system(f'cat "{self.file}" | pbcopy && rm "{self.file}"')
     print(f'Replaced {self.file} onto clipboard successfully')
+
+  def printInfo(self):
+    print('DATA')
+    for line in self.var:
+      print(line)
+    print('')
+
+    print('MEMORY')
+    for line in self.mem:
+      print(line)
+    print('')
+
+    print('OPCODES')
+    print(self.opcodes,'\n')
+
