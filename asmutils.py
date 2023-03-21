@@ -18,9 +18,10 @@ def getVar(file):
         is_past_data = False
         break
       elif is_past_data and line[0] != ';' and line[0] != '\n':
-        bits = line.replace(';', ' ').split()
+        mark = len(line) if ';' not in line else line.find(';')
+        bits = line[:mark].split()
         if len(bits) > 2:
-          data.append(bits[:3])
+          data.append(bits)
     return data
 
 # Get specific memory variable
@@ -42,17 +43,18 @@ def getIns(file):
     # Only get code between .data and .code
     is_past_code = False
     for line in lines:
-      line = line.casefold()
-      if not is_past_code and '.code' in line:
+      line = line.casefold().replace(',', ' ')
+      if not is_past_code and 'main proc' in line:
         is_past_code = True
         continue
       elif is_past_code and 'invoke' in line:
         is_past_code = False
         break
       elif is_past_code and line[0] != ';' and line[0] != '\n':
-        bits = line.replace(';', ' ').replace(',','').split()
-        if len(bits) > 2:
-          data.append(bits[:3])
+        mark = len(line) if ';' not in line else line.find(';')
+        bits = line[:mark].split()
+        if len(bits) > 0:
+          data.append(bits)
     return data
 
 # Get opcodes only 
