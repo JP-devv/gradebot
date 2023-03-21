@@ -7,17 +7,17 @@ class asm:
 
   def __init__(self, file):
     self.file = file
-    self.standardize() # Cleans file to uniform format
-    self.is32() # Determines if 32 bit or 64 bit program
+    self.__standardize() # Cleans file to uniform format
+    self.__is32() # Determines if 32 bit or 64 bit program
     with open(self.file) as file: # Get content from file
       self.lines = file.readlines()
-    self.var = self.getVar() # Get variables from data section
-    self.mem = self.getMem() # Get variable selected for memory
-    self.ins = self.getIns() # Get ASM instructions
-    self.opcodes = self.getOp() # Get unique opcodes uses in file
+    self.var = self.__getVar() # Get variables from data section
+    self.mem = self.__getMem() # Get variable selected for memory
+    self.ins = self.__getIns() # Get ASM instructions
+    self.opcodes = self.__getOp() # Get unique opcodes uses in file
 
   # Gets variables from data section
-  def getVar(self):
+  def __getVar(self):
     # Store data in a list
     data = []
     # Only get code between .data and .code
@@ -38,7 +38,7 @@ class asm:
     return data
 
   # Get specific memory variable
-  def getMem(self):
+  def __getMem(self):
     # Filter from data, we know memory will start as 0 or ?
     new_data = []
     for elem in self.var:
@@ -47,7 +47,7 @@ class asm:
     return new_data
 
   # Get instructions from code section
-  def getIns(self):
+  def __getIns(self):
     # Store data in a list
     data = []
     # Only get code between .data and .code
@@ -68,14 +68,14 @@ class asm:
     return data
 
   # Get opcodes only 
-  def getOp(self):
+  def __getOp(self):
     data = []
     for elem in self.ins:
       data.append(elem[0])
     return set(data)
       
   # Determine if 32 bit or 64 bit program
-  def is32(self):
+  def __is32(self):
     for line in self.lines:
       if '.386' in line:
         print('32 BIT PROGRAM\n')
@@ -92,8 +92,8 @@ class asm:
         names.append(line.split()[0])
       return names
 
-  # Standardize linker
-  def standardize(self):
+  # __standardize linker
+  def __standardize(self):
     os.system(f'sed -i "" "s/^main/_main/" "{self.file}"')
     os.system(f'sed -i "" "s/END main/END _main/" "{self.file}"')
 
