@@ -13,9 +13,7 @@ class asm:
     self.standardize()
     with open(self.file) as file:
       self.lines = file.readlines()
-    newinst = self.lines.copy()
     self.var = self.getVar()
-    print(self.lines == newinst)
     self.mem = self.getMem()
     self.ins = self.getIns()
     self.opcodes = self.getOp()
@@ -38,7 +36,7 @@ class asm:
         bits = line[:mark].split()
         if len(bits) > 2:
           data.append(bits)
-      return data
+    return data
 
   # Get specific memory variable
   def getMem(self):
@@ -68,7 +66,7 @@ class asm:
         bits = line[:mark].split()
         if len(bits) > 0:
           data.append(bits)
-      return data
+    return data
 
   # Get opcodes only 
   def getOp(self):
