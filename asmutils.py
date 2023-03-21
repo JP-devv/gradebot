@@ -95,4 +95,4 @@ def standardize(file):
 # Copy file to clipboard and delete
 def replace(file):
   os.system(f'cat "{file}" | pbcopy && rm "{file}"')
-  print(f'Replaced {file} successfully')
+  print(f'Replaced {file} onto clipboard successfully')
