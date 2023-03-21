@@ -71,9 +71,9 @@ def is32(file):
     lines = f.readlines()
     for line in lines:
       if '.386' in line:
-        print('32 BIT\n')
+        print('32 BIT PROGRAM\n')
         return True
-    print('WARNING: 64 BIT SYSTEM CODE DETECTED\n')
+    print('WARNING: 64 BIT SYSTEM CODE DETECTED, ADAPT VS AS NECESSARY\n')
     return False
       
 # Gets function names
