@@ -126,6 +126,7 @@ class asm:
     print('')
     print('OPCODES')
     print(self.opcodes,'\n')
-    print('LABLES')
-    print(self.labels, '\n')
+    if self.labels:
+      print('LABLES')
+      print(self.labels, '\n')
 
