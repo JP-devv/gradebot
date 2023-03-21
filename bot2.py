@@ -13,7 +13,6 @@ file = asm(file)
 # is32 is a boolean whether 32 bit or 64 bit 
 # names is a list of functions that we have
 is32 = file.is32()
-
 # Compute with data here
 print('DATA')
 for line in file.var:
