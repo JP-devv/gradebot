@@ -14,7 +14,7 @@ assert 'jbe' in file.opcodes or 'jz' in file.opcodes, 'jump not used'
 assert len(file.labels) > 0, 'No labels used'
 # Check if there is memory
 assert file.mem, 'No memory allocated for registers'
-print('INSERT ANSWER HERE')
+print('Expect 0x109E82 (1099778)')
 
 # Replace file with new data if test argument isn't given
 if len(sys.argv) == 2:
