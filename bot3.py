@@ -16,5 +16,4 @@ assert file.mem, 'No memory allocated for registers'
 print('INSERT ANSWER HERE')
 # Replace file with new data if test argument isn't given
 if len(sys.argv) == 2:
-  print('')
   file.replace()

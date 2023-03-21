@@ -121,12 +121,8 @@ class asm:
     for line in self.var:
       print(line)
     print('')
-    print('MEMORY')
-    for line in self.mem:
-      print(line)
-    print('')
     print('OPCODES')
-    print(self.opcodes,'\n')
+    print(self.opcodes, '\n')
     if self.labels:
       print('LABLES')
       print(self.labels, '\n')
