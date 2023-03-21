@@ -3,7 +3,7 @@ from asmutils import *
 # Get file from arguments
 file = sys.argv[1]
 file = asm(file)
-# Compute with data here
+# Print info from file
 file.printInfo()
 # Test usage of mov
 assert 'mov' in file.opcodes, 'mov not used'
