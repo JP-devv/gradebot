@@ -3,14 +3,15 @@ import os
 
 class asm:
   file = None
-  var, mem, ins, opcodes, lines = None, None, None, None, None
+  var, mem, ins, opcodes, functions, lines = None, None, None, None, None, None
 
   def __init__(self, file):
     self.file = file
     self.__standardize() # Cleans file to uniform format
-    self.__is32() # Determines if 32 bit or 64 bit program
     with open(self.file) as file: # Get content from file
       self.lines = file.readlines()
+    self.__is32() # Determines if 32 bit or 64 bit program
+    self.functions = self.__getFunction() # Get function names
     self.var = self.__getVar() # Get variables from data section
     self.mem = self.__getMem() # Get variable selected for memory
     self.ins = self.__getIns() # Get ASM instructions
@@ -80,11 +81,11 @@ class asm:
       if '.386' in line:
         print('32 BIT PROGRAM\n')
         return True
-      print('WARNING: 64 BIT SYSTEM CODE DETECTED, ADAPT VS AS NECESSARY\n')
-      return False
+    print('WARNING: 64 BIT SYSTEM CODE DETECTED, ADAPT AS NECESSARY\n')
+    return False
         
   # Gets function names
-  def getFunction(self):
+  def __getFunction(self):
     # Store functions as string list
     names = []
     for line in self.lines:
