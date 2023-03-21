@@ -126,4 +126,3 @@ class asm:
     if self.labels:
       print('LABLES')
       print(self.labels, '\n')
-
