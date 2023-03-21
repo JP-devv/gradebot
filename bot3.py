@@ -8,8 +8,10 @@ file.printInfo()
 
 # Test usage of add 
 assert 'add' in file.opcodes, 'add not used'
-# Test usage of mul
-assert 'jbe' in file.opcodes or 'jz' in file.opcodes, 'jump not used'
+# Test usage of any variation of jump
+assert 'jbe' in file.opcodes or 'jz' in file.opcodes \
+  or 'jae' in file.opcodes or 'je' in file.opcodes \
+  or 'jmp' in file.opcodes, 'jump not used'
 # Test if labels are used
 assert len(file.labels) > 0, 'No labels used'
 # Check if there is memory
