@@ -1,11 +1,13 @@
 import sys
 from asmutils import *
 # Get file from arguments
-file = sys.argv[1]
-file = asm(file)
+name = sys.argv[1]
+file = asm(name)
 # Print info from file
 file.printInfo()
 
+# Test if is an ASM file
+assert '.asm' in name, 'Not an ASM file'
 # Test usage of add 
 assert 'add' in file.opcodes, 'add not used'
 # Test usage of any variation of jump
