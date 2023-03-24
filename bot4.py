@@ -49,13 +49,11 @@ if not file.mem:
     print('⚠️ No memory allocated for registers')
 
 # Calculate expected value
-celsius = int(file.var[0][2])
-flag = True
+celsius, flag = int(file.var[0][2]), True
 for item in file.var:
     # Looking for the celsius variable, it should contain the letter 'c'
     if item[2] != 0 and 'c' in item[0]:
-        celsius = int(item[2])
-        flag = False
+        celsius, flag = int(item[2]), False
 fahrenheit = int(celsius * (9/5) + 32) if celsius != -1.1 else -1.1
 if flag or len(file.var) != 2:
     print('⚠️ Warning, expected value could be incorrect')
