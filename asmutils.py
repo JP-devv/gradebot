@@ -1,10 +1,10 @@
 # Helpful utilities when grading ASM
 import os
 
-
 class asm:
-    file = None
-    var, mem, ins, opcodes, functions, labels, lines = None, None, None, None, None, None, None
+    file, lines = None
+    var, mem, ins = None, None, None
+    opcodes, functions, labels = None, None, None
 
     # Constructor will get all necessary information from file
     # and will organize it to be easily accessable for whatever you need
@@ -66,6 +66,7 @@ class asm:
                 is_past_code = False
                 break
             elif is_past_code and line[0] != ';' and line[0] != '\n' and ':' not in line:
+                # Get rid of pesky comments
                 mark = len(line) if ';' not in line else line.find(';')
                 bits = line[:mark].split()
                 if len(bits) > 0:
@@ -93,6 +94,7 @@ class asm:
                 is_past_code = False
                 break
             elif is_past_code and line[0] != ';' and line[0] != '\n' and ':' in line:
+                # Get rid of pesky comments
                 mark = len(line) if ';' not in line else line.find(';')
                 bits = line[:mark].split()
                 if len(bits) > 0:
