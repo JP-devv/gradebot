@@ -2,7 +2,7 @@
 import os
 
 class asm:
-    file, lines = None
+    file, lines = None, None
     var, mem, ins = None, None, None
     opcodes, functions, labels = None, None, None
 
