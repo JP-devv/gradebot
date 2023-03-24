@@ -30,7 +30,6 @@ except AssertionError as e: print(e)
 try: assert file.mem, '⚠️ No memory allocated for registers'
 except AssertionError as e: print(e)
 
-
 print('Expect 0x00000049 (73)')
 
 # Replace file with new data if test argument isn't given
