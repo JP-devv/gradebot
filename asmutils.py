@@ -1,6 +1,7 @@
 # Helpful utilities when grading ASM
 import os
 
+
 class asm:
     file, lines = None, None
     var, mem, ins = None, None, None
@@ -117,7 +118,7 @@ class asm:
         for line in self.lines:
             if 'endp' in line:
                 names.append(line.split()[0])
-            return names
+        return names
 
     # __standardize linker
     def __standardize(self):
@@ -141,3 +142,6 @@ class asm:
         if self.labels:
             print('LABLES')
             print(self.labels, '\n')
+        if self.functions and len(self.functions) > 1:
+            print('FUNCTIONS')
+            print(self.functions, '\n')
