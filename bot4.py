@@ -54,7 +54,7 @@ for item in file.var:
     # Looking for the celsius variable, it should contain the letter 'c'
     if item[2] != 0 and 'c' in item[0]:
         celsius, flag = int(item[2]), False
-fahrenheit = int(celsius * (9/5) + 32) if celsius != -1.1 else -1.1
+fahrenheit = int(celsius * (9/5) + 32)
 if flag or len(file.var) != 2:
     print('⚠️ Warning, expected value could be incorrect')
 print(f'Expect {hex(fahrenheit)} ({fahrenheit})')
