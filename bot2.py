@@ -6,21 +6,30 @@ file = asm(name)
 # Print info from file
 file.printInfo()
 
-try:
-    # Test if is an ASM file
-    assert '.asm' in name, '⚠️ Not an ASM file'
-    # Test usage of add
-    assert 'add' in file.opcodes, '⚠️ add not used'
-    # Test usage of mul
-    assert 'mul' in file.opcodes or 'imul' in file.opcodes, '⚠️ mul not used'
-    # Test usage of cdq
-    assert 'cdq' in file.opcodes, '⚠️ cdq not used'
-    # Test usage of div
-    assert 'div' in file.opcodes or 'idiv' in file.opcodes, '⚠️ div not used'
-    # Check if there is memory
-    assert file.mem, '⚠️ No memory allocated for registers'
-except AssertionError as e:
-    print(e)
+# Test if is an ASM file
+try: assert '.asm' in name, '⚠️ Not an ASM file'
+except AssertionError as e: print(e)
+
+# Test usage of add
+try: assert 'add' in file.opcodes, '⚠️ add not used'
+except AssertionError as e: print(e)
+
+# Test usage of mul
+try: assert 'mul' in file.opcodes or 'imul' in file.opcodes, '⚠️ mul not used'
+except AssertionError as e: print(e)
+
+# Test usage of cdq
+try: assert 'cdq' in file.opcodes, '⚠️ cdq not used'
+except AssertionError as e: print(e)
+
+# Test usage of div
+try: assert 'div' in file.opcodes or 'idiv' in file.opcodes, '⚠️ div not used'
+except AssertionError as e: print(e)
+
+# Check if there is memory
+try: assert file.mem, '⚠️ No memory allocated for registers'
+except AssertionError as e: print(e)
+
 
 print('Expect 0x00000049 (73)')
 

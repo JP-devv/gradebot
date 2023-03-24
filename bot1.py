@@ -6,19 +6,25 @@ file = asm(name)
 # Print info from file
 file.printInfo()
 
-try:
-    # Test if is an ASM file
-    assert '.asm' in name, '⚠️ Not an ASM file'
-    # Test usage of mov
-    assert 'mov' in file.opcodes, '⚠️ mov not used'
-    # Test usage of add
-    assert 'add' in file.opcodes, '⚠️ add not used'
-    # Test usage of sub
-    assert 'sub' in file.opcodes, '⚠️ sub not used'
-    # Check if there is memory
-    assert file.mem, '⚠️ No memory allocated for registers'
-except AssertionError as e:
-    print(e)
+# Test if is an ASM file
+try: assert '.asm' in name, '⚠️ Not an ASM file'
+except AssertionError as e: print(e)
+
+# Test usage of mov
+try: assert 'mov' in file.opcodes, '⚠️ mov not used'
+except AssertionError as e: print(e)
+
+# Test usage of add
+try: assert 'add' in file.opcodes, '⚠️ add not used'
+except AssertionError as e: print(e)
+
+# Test usage of sub
+try: assert 'sub' in file.opcodes, '⚠️ sub not used'
+except AssertionError as e: print(e)
+
+# Check if there is memory
+try: assert file.mem, '⚠️ No memory allocated for registers'
+except AssertionError as e: print(e)
 
 print('Expect 0xFFFFFFB (-5)')
 
