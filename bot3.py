@@ -1,28 +1,34 @@
 import sys
 from asmutils import *
+
 # Get file from arguments
-file = sys.argv[1]
-file = asm(file)
+name = sys.argv[1]
+file = asm(name)
+
 # Print info from file
 file.printInfo()
 
+# Test if is an ASM file
+if '.asm' not in name:
+    print('⚠️ Not an ASM file')
+
 # Test usage of add
-try: assert 'add' in file.opcodes, '⚠️ add not used'
-except AssertionError as e: print(e)
+if 'add' not in file.opcodes:
+    print('⚠️ add not used')
 
 # Test usage of any variation of jump
-try: assert 'jbe' in file.opcodes or 'jz' in file.opcodes \
-    or 'jae' in file.opcodes or 'je' in file.opcodes \
-    or 'jmp' in file.opcodes, '⚠️ jump not used'
-except AssertionError as e: print(e)
+if 'jbe' not in file.opcodes and 'jz' not in file.opcodes and \
+    'jae' not in file.opcodes and 'je' not in file.opcodes and \
+    'jmp' not in file.opcodes:
+    print('⚠️ jmp not used')
 
 # Test if labels are used
-try: assert len(file.labels) > 0, '⚠️ No labels used'
-except AssertionError as e: print(e)
+if len(file.labels) == 0:
+    print('⚠️ No labels used')
 
 # Check if there is memory
-try: assert file.mem, '⚠️ No memory allocated for registers'
-except AssertionError as e: print(e)
+if not file.mem:
+    print('⚠️ No memory allocated for registers')
 
 print('Expect 0x109E82 (1099778)')
 
