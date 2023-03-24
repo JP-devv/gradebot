@@ -21,8 +21,12 @@ if 'mul' not in file.opcodes and 'imul' not in file.opcodes:
     print('⚠️ mul not used')
 
 # Test usage of cdq
-if 'cdq' not in file.opcodes:
+if 'cdq' not in file.opcodes and 'dword' == file.var[0][1]:
     print('⚠️ cdq not used')
+
+# Test usage of cwd
+if 'cwd' not in file.opcodes and 'word' == file.var[0][1]:
+    print('⚠️ cwd not used')
 
 # Test usage of div
 if 'div' not in file.opcodes and 'idiv' not in file.opcodes:

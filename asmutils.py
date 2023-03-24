@@ -52,33 +52,44 @@ class asm:
             if elem[2] == '0' or elem[2] == '?':
                 new_data.append(elem)
         return new_data
+    
+    # Insight on how instructions work:
+    # The instructions are a 2D array where each list pertains to a function.
+    # The function name is the first item of the list, where the remainder items
+    # pertaining to that same list are the instructions for that function.
+    # 
+    # The list goes on if other functions exist, and follow this same pattern.
 
     # Get instructions from code section
     def __getIns(self):
         # Store data in a list
-        data = []
+        data, list = [], []
         # Only get code between .data and .code
         is_past_code = False
         for line in self.lines:
-            if not is_past_code and 'main proc' in line:
+            if not is_past_code and ' proc' in line:
                 is_past_code = True
-                continue
-            elif is_past_code and 'invoke' in line:
+                data.append(line.split()[0])
+            elif is_past_code and 'endp' in line:
                 is_past_code = False
-                break
-            elif is_past_code and line[0] != ';' and line[0] != '\n' and ':' not in line:
+                list.append(data)
+                data = []
+            elif is_past_code and line[0] != ';' \
+                and line[0] != '\n' and ':' not in line \
+                and 'invoke' not in line:
                 # Get rid of pesky comments
                 mark = len(line) if ';' not in line else line.find(';')
                 bits = line[:mark].split()
                 if len(bits) > 0:
                     data.append(bits)
-        return data
+        return list
 
     # Get opcodes only
     def __getOp(self):
         data = []
-        for elem in self.ins:
-            data.append(elem[0])
+        for item in self.ins:
+            for i in range(1, len(item)):
+                data.append(item[i][0])
         return set(data)
 
     # Get instructions from code section
@@ -98,8 +109,8 @@ class asm:
                 # Get rid of pesky comments
                 mark = len(line) if ';' not in line else line.find(';')
                 bits = line[:mark].split()
-                if len(bits) > 0:
-                    data.append(bits[-1])
+                if len(bits) > 0:                           # We want the last element [-1]
+                    data.append(bits[-1][:len(bits[-1])-1]) # This ensures we remove any ':' at the end
         return data
 
     # Determine if 32 bit or 64 bit program
@@ -108,7 +119,7 @@ class asm:
             if '.386' in line:
                 print('32 BIT PROGRAM\n')
                 return True
-        print('WARNING: 64 BIT SYSTEM CODE DETECTED, ADAPT AS NECESSARY\n')
+        print('⚠️⚠️⚠️ 64 BIT SYSTEM CODE DETECTED, ADAPT AS NECESSARY ⚠️⚠️⚠️\n')
         return False
 
     # Gets function names
