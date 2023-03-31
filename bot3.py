@@ -3,10 +3,10 @@ from asmutils import *
 
 # Get file from arguments
 name = sys.argv[1]
-file = asm(name)
+file = Asm(name)
 
 # Print info from file
-file.printInfo()
+file.print_info()
 
 # Test if is an ASM file
 if '.asm' not in name:

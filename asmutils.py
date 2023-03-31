@@ -1,34 +1,28 @@
-# Helpful utilities when grading ASM
 import os
+import subprocess
 
 
-class asm:
-    file, lines = None, None
-    var, mem, ins = None, None, None
-    opcodes, functions, labels = None, None, None
+class Asm:
+    """A class for analyzing Assembly language (ASM) code."""
 
-    # Constructor will get all necessary information from file
-    # and will organize it to be easily accessable for whatever you need
     def __init__(self, file):
+        """Initialize an instance of the Asm class."""
         self.file = file
-        self.__standardize()  # Cleans file to uniform format
-        with open(self.file) as file:  # Get content from file
-            self.lines = file.readlines()
-            for i in range(len(self.lines)):
-                self.lines[i] = self.lines[i].casefold().replace(',', ' ')
-        self.__is32()  # Determines if 32 bit or 64 bit program
-        self.functions = self.__getFunction()  # Get function names
-        self.var = self.__getVar()  # Get variables from data section
-        self.mem = self.__getMem()  # Get variable selected for memory
-        self.ins = self.__getIns()  # Get ASM instructions
-        self.opcodes = self.__getOp()  # Get unique opcodes uses in file
-        self.labels = self.__getlabels()  # Get labels used in file
+        self._standardize()
+        with open(self.file) as file:
+            self.lines = [line.casefold().replace(',', ' ')
+                          for line in file.readlines()]
+        self._is32()
+        self.functions = self._get_functions()
+        self.var = self._get_var()
+        self.mem = self._get_mem()
+        self.ins = self._get_ins()
+        self.opcodes = self._get_opcodes()
+        self.labels = self._get_labels()
 
-    # Gets variables from data section
-    def __getVar(self):
-        # Store data in a list
+    def _get_var(self):
+        """Retrieve variables from the data section."""
         data = []
-        # Only get code between .data and .code
         is_past_data = False
         for line in self.lines:
             if not is_past_data and '.data' in line:
@@ -38,26 +32,20 @@ class asm:
                 is_past_data = False
                 break
             elif is_past_data and line[0] != ';' and line[0] != '\n':
-                mark = len(line) if ';' not in line else line.find(';')
-                bits = line[:mark].split()
-                if len(bits) > 2:
-                    data.append(bits)
+                comment_position = len(
+                    line) if ';' not in line else line.find(';')
+                tokens = line[:comment_position].split()
+                if len(tokens) > 2:
+                    data.append(tokens)
         return data
 
-    # Get specific memory variable
-    def __getMem(self):
-        # Filter from data, we know memory will start as 0 or ?
-        new_data = []
-        for elem in self.var:
-            if elem[2] == '0' or elem[2] == '?':
-                new_data.append(elem)
-        return new_data
+    def _get_mem(self):
+        """Retrieve specific memory variables with a value of '0' or '?'."""
+        return [elem for elem in self.var if elem[2] in ('0', '?')]
 
-    # Get instructions from code section
-    def __getIns(self):
-        # Store data in a list
+    def _get_ins(self):
+        """Retrieve instructions from the code section."""
         data = []
-        # Only get code between .data and .code
         is_past_code = False
         for line in self.lines:
             if not is_past_code and 'main proc' in line:
@@ -67,25 +55,20 @@ class asm:
                 is_past_code = False
                 break
             elif is_past_code and line[0] != ';' and line[0] != '\n' and ':' not in line:
-                # Get rid of pesky comments
-                mark = len(line) if ';' not in line else line.find(';')
-                bits = line[:mark].split()
-                if len(bits) > 0:
-                    data.append(bits)
+                comment_position = len(
+                    line) if ';' not in line else line.find(';')
+                tokens = line[:comment_position].split()
+                if len(tokens) > 0:
+                    data.append(tokens)
         return data
 
-    # Get opcodes only
-    def __getOp(self):
-        data = []
-        for elem in self.ins:
-            data.append(elem[0])
-        return set(data)
+    def _get_opcodes(self):
+        """Retrieve unique opcodes from the instructions."""
+        return {elem[0] for elem in self.ins}
 
-    # Get instructions from code section
-    def __getlabels(self):
-        # Store data in a list
+    def _get_labels(self):
+        """Retrieve labels from the code section."""
         data = []
-        # Only get code between .data and .code
         is_past_code = False
         for line in self.lines:
             if not is_past_code and 'main proc' in line:
@@ -95,15 +78,15 @@ class asm:
                 is_past_code = False
                 break
             elif is_past_code and line[0] != ';' and line[0] != '\n' and ':' in line:
-                # Get rid of pesky comments
-                mark = len(line) if ';' not in line else line.find(';')
-                bits = line[:mark].split()
-                if len(bits) > 0:
-                    data.append(bits[-1])
+                comment_position = len(
+                    line) if ';' not in line else line.find(';')
+                tokens = line[:comment_position].split()
+                if len(tokens) > 0:
+                    data.append(tokens[-1])
         return data
 
-    # Determine if 32 bit or 64 bit program
-    def __is32(self):
+    def _is32(self):
+        """Determine if the assembly code is for a 32-bit or 64-bit program."""
         for line in self.lines:
             if '.386' in line:
                 print('32 BIT PROGRAM\n')
@@ -111,28 +94,24 @@ class asm:
         print('WARNING: 64 BIT SYSTEM CODE DETECTED, ADAPT AS NECESSARY\n')
         return False
 
-    # Gets function names
-    def __getFunction(self):
-        # Store functions as string list
-        names = []
-        for line in self.lines:
-            if 'endp' in line:
-                names.append(line.split()[0])
-        return names
+    def _get_functions(self):
+        """Retrieve function names from the assembly code."""
+        return [line.split()[0] for line in self.lines if 'endp' in line]
 
-    # __standardize linker
-    def __standardize(self):
-        os.system(f'sed -i "" "s/^main/_main/" "{self.file}"')
-        os.system(f'sed -i "" "s/END main/END _main/" "{self.file}"')
+    def _standardize(self):
+        """Standardize the assembly code by updating labels and directives."""
+        subprocess.run(['sed', '-i', '""', 's/^main/_main/', self.file])
+        subprocess.run(['sed', '-i', '""', 's/END main/END _main/', self.file])
 
-    # Copy file to clipboard and delete
     def replace(self):
+        """Copy the content of the assembly code file to the clipboard and delete the file."""
         print('')
-        os.system(f'cat "{self.file}" | pbcopy && rm "{self.file}"')
+        subprocess.run(['cat', self.file, '|', 'pbcopy'])
+        os.remove(self.file)
         print(f'Replaced {self.file} onto clipboard successfully')
 
-    # Print all information
-    def printInfo(self):
+    def print_info(self):
+        """Print gathered information about the assembly code."""
         print('DATA')
         for line in self.var:
             print(line)
@@ -140,7 +119,7 @@ class asm:
         print('OPCODES')
         print(self.opcodes, '\n')
         if self.labels:
-            print('LABLES')
+            print('LABELS')
             print(self.labels, '\n')
         if self.functions and len(self.functions) > 1:
             print('FUNCTIONS')
